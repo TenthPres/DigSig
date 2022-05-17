@@ -1,0 +1,7 @@
+/vendor/
+composer.lock
+/assets/images/people
+/.phpdoc/
+/phpDocumentor.phar
+*.css
+*.css.map

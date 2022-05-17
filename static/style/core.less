@@ -1,0 +1,110 @@
+@import 'https://use.typekit.net/pyl5ljc.css';
+
+body {
+  color:#fff;
+  background-color:#000;
+  text-shadow: 1px 1px #000, 1px 0 0 #000, 1px -1px #000,
+  0 1px #000, 0 -1px #000,
+  -1px 1px #000, -1px 0 0 #000, -1px -1px #000;
+
+  overflow: hidden;
+
+  font-size:4vw;
+
+  font-family: "Lato", "Open Sans", "open-sans", sans-serif;
+
+  text-align:center;
+
+  margin: 0 0 0 0;
+}
+
+#slideSpace > div {
+  background-size: cover;
+  height: 100vh;
+  position: absolute;
+  width: 100vw;
+  transition: opacity .7s linear, background-position 10s linear;
+}
+
+#slideSpace div.single {
+  background: url(../img/genericBackground.jpg) center center;
+  background-size: cover;
+
+  & > div {
+    margin: 10vh;
+    padding: 5vh;
+    vertical-align: middle;
+    background-color: rgba(0,0,0,.65);
+
+    p, h2 {
+      margin: .5em;
+    }
+
+    .ministry {
+      font-size: .7em;
+      opacity: .5;
+    }
+  }
+}
+
+#slideSpace div.welcome {
+  background: url(../img/welcome.jpg) left bottom;
+  background-size: cover;
+}
+
+#slideSpace div.thisSunday {
+  background: url(../img/thisSundayBackground.jpg) center center;
+  background-size: cover;
+
+  & > div {
+    margin: 7vh;
+    padding: 3vh;
+    vertical-align: middle;
+    background-color: rgba(0,0,0,.55);
+
+    h2 {
+      margin: 0;
+    }
+
+    table {
+      font-size: .7em;
+      width:100%;
+    }
+
+    td {
+      padding: .2em .3em;
+      text-align: left;
+      vertical-align: top;
+    }
+    td.right {
+      text-align: right;
+    }
+  }
+}
+
+#slideSpace div.happeningNow {
+  background: #004433;
+  background-size: cover;
+
+  & > div {
+    margin: 7vh;
+    padding: 3vh;
+    vertical-align: middle;
+    background-color: rgba(0,0,0,.55);
+
+    h2 {
+      margin: 0;
+    }
+
+    table {
+      font-size: 1em;
+      width:100%;
+    }
+
+    td {
+      padding: .2em .3em;
+      text-align: left;
+      vertical-align: top;
+    }
+  }
+}
