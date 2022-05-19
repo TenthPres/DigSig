@@ -128,8 +128,7 @@ function updateEventLists() {
 
     function featuredCallback() {
         let evts = JSON.parse(this.responseText).events,
-            newEventList = [],
-            newEventTitles = [];
+            newEventList = [];
 
         for (let ei in evts) {
             if (!evts.hasOwnProperty(ei))
@@ -137,11 +136,6 @@ function updateEventLists() {
 
             if (!evts[ei].hasOwnProperty('title'))
                 continue;
-
-            // if (newEventTitles.indexOf(evts[ei].title) > -1)
-            //     continue;
-            //
-            // newEventTitles.push(evts[ei].title);
 
             let evtObj = {
                 title: evts[ei].title,
@@ -151,20 +145,27 @@ function updateEventLists() {
                 location: evts[ei].venue.venue ?? '',
                 category: evts[ei].categories.name ?? null,
                 imageUrl: evts[ei].slide ?? (evts[ei].image === false ? null : evts[ei].image.url),
+                url: evts[ei].url ?? "",
                 hasSlideImage: !!evts[ei].slide
             };
             newEventList.push(evtObj)
         }
 
-        featuredEventList = newEventList
-            .sort((a, b) => a.dtStart.getTime() - b.dtStart.getTime())
-            // .filter((a) => {
-            //     if (newEventTitles.indexOf(a.title) > -1)
-            //         return false;
-            //     newEventTitles.push(a.title);
-            //     return true
-            // })
-        ;
+        // remove duplicates
+        let newEventList2 = [],
+            indexedUrls = [];
+        for (const ei in newEventList.sort((a, b) => a.dtStart.getTime() - b.dtStart.getTime())) {
+            if (!newEventList.hasOwnProperty(ei))
+                continue;
+            let url = newEventList[ei].url.substring(29).split("/", 2);
+            if (indexedUrls.indexOf(url[0]) === -1) {
+                newEventList2.push(newEventList[ei]);
+                indexedUrls.push(url[0])
+            }
+        }
+
+        // apply list
+        featuredEventList = newEventList2;
 
         if (currentSlide === null)
             changeSlide();
