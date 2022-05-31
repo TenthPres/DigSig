@@ -18,7 +18,7 @@ Date.prototype.addDays = function(days) {
  * @param string
  * @return {string}
  */
-Date.prototype.toString = function(string = "Y-m-d h:i:s") {
+Date.prototype.toString = function(string = "%Y-%m-%d %h:%i:%s") {
     let Y = this.getFullYear().toString(),
         m = ("0" + (this.getMonth()+1).toString()).slice(-2),
         j  = this.getDate().toString(),
@@ -36,28 +36,28 @@ Date.prototype.toString = function(string = "Y-m-d h:i:s") {
         M = this.toLocaleDateString("en-US", { month: 'long' });
 
     return string
-        .replace("Y", Y)
-        .replace("m", m)
-        .replace("j", j)
-        .replace("d", d)
-        .replace("D", D)
-        .replace("a", a)
-        .replace("A", A)
-        .replace("G", G)
-        .replace("g", g)
-        .replace("H", H)
-        .replace("h", h)
-        .replace("i", i)
-        .replace("s", s)
-        .replace("l", l)
-        .replace("M", M);
+        .replace("%Y", Y)
+        .replace("%m", m)
+        .replace("%j", j)
+        .replace("%d", d)
+        .replace("%D", D)
+        .replace("%a", a)
+        .replace("%A", A)
+        .replace("%G", G)
+        .replace("%g", g)
+        .replace("%H", H)
+        .replace("%h", h)
+        .replace("%i", i)
+        .replace("%s", s)
+        .replace("%l", l)
+        .replace("%M", M);
 };
 
 
 Date.prototype.toDateStringFormatted = function() {
     /* Today */
     let now = new Date();
-    if (this.toString("YMd") === now.toString("YMd")) {
+    if (this.toString("%Y%M%d") === now.toString("%Y%M%d")) {
         if (parseInt(this.toString('G')) >= 17) { // 5pm or later
             return "Tonight";
         } else {
@@ -66,22 +66,22 @@ Date.prototype.toDateStringFormatted = function() {
     }
 
     /* Tomorrow */
-    if (now.addDays(1).toString('YMd') === this.toString('YMd')) {
+    if (now.addDays(1).toString('%Y%M%d') === this.toString('%Y%M%d')) {
         return "Tomorrow";
     }
 
     /* This week */
     if (this.getTime() - now.getTime() < 7 * 86400 * 1000) {
-        return "This " + this.toString('l');
+        return "This " + this.toString('%l');
     }
 
     /* Next week */
     if (this.getTime() - now.getTime() < 14 * 86400 * 1000) {
-        return "Next " + this.toString('D, M j');
+        return "Next " + this.toString('%D, %M %j');
     }
 
     /* Other Times */
-    return this.toString('l, M j');
+    return this.toString('%l, %M %j');
 };
 
 
@@ -100,7 +100,7 @@ Date.prototype.getWeek = function() {
 
 Date.prototype.toTimeStringFormatted = function() {
     /** @var String string */
-    let string = this.toString('g:ia');
+    let string = this.toString('%g:%i%a');
 
     string = string
         .replace(":00", "")
@@ -121,7 +121,7 @@ function updateEventLists() {
     xhr.addEventListener("load", featuredCallback);
     xhr.open("GET", "https://www.tenth.org/wp-json/tribe/events/v1/events?featured=true&start_date=" +
     // xhr.open("GET", "https://www.tenth.org/wp-json/tribe/events/v1/events?start_date=" +
-        d0.toString("Y-m-d") + "&end_date=" + d1.toString("Y-m-d") +
+        d0.toString("%Y-%m-%d") + "&end_date=" + d1.toString("%Y-%m-%d") +
         "&hide_subsequent_recurrences=1&per_page=200", featuredCallback);
         // "&per_page=200", featuredCallback);
     xhr.send();
