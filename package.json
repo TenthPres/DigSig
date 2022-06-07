@@ -1,0 +1,30 @@
+{
+  "name": "digsig",
+  "version": "0.0.9",
+  "description": "Dig(ital) Sig(nage) Build Procedure",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm-run-all build:*",
+    "build:rm": "del digsig.zip",
+    "build:less-1": "lessc static/style/core.less static/style/core.css --source-map",
+    "build:less-2": "csso -i static/style/core.css -o static/style/core.min.css -s static/style/core.min.css.map",
+    "build:zip": "jszip static/ src/ DigSig.php LICENSE.md composer.json --ignore *.less -o digsig.zip"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TenthPres/DigSigs.git"
+  },
+  "author": "James Kurtz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TenthPres/DigSigs/issues"
+  },
+  "homepage": "https://github.com/TenthPres/DigSigs#readme",
+  "devDependencies": {
+    "csso-cli": "^3.0.0",
+    "del-cli": "^4.0.1",
+    "jszip-cli": "^1.4.24",
+    "less": "^4.1.2",
+    "npm-run-all": "^4.1.5"
+  }
+}
