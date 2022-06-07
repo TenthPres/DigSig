@@ -1,10 +1,8 @@
 /vendor/
 composer.lock
-/assets/images/people
 /.phpdoc/
 /phpDocumentor.phar
 *.css
 *.css.map
 /digsig.zip
-/package-lock.json
 /node_modules/
