@@ -5,3 +5,6 @@ composer.lock
 /phpDocumentor.phar
 *.css
 *.css.map
+/digsig.zip
+/package-lock.json
+/node_modules/

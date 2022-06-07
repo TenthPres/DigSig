@@ -21,7 +21,7 @@ class DigSig
     /**
      * Version number
      */
-    public const VERSION = "0.0.8";
+    public const VERSION = "0.0.9";
 
     public const DEBUG = false;
 
