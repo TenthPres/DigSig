@@ -3,9 +3,12 @@
     "description": "Digital Signage powered by WordPress",
     "type": "wordpress-plugin",
     "license": "MIT",
+    "config": {
+        "optimize-autoloader": true
+    },
     "autoload": {
         "psr-4": {
-            "Tenthpres\\Digsig\\": "src/"
+            "tp\\DigSig\\": "./src/DigSig"
         }
     },
     "authors": [

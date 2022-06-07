@@ -23,8 +23,6 @@ Tested up to:       5.9.3
 Requires PHP:       7.4
 */
 
-namespace tp\DigSig;
-
 // die if called directly.
 if ( ! defined('WPINC')) {
     die;
@@ -32,12 +30,16 @@ if ( ! defined('WPINC')) {
 
 /*** Load everything **/
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    /** @noinspection PhpIncludeInspection */
+    /** @noinspection PhpIncludeInspection
+     * @noinspection RedundantSuppression
+     */
     require_once __DIR__ . '/vendor/autoload.php';
 } else {
     require_once __DIR__ . "/src/DigSig/DigSig.php";
     require_once __DIR__ . "/src/DigSig/DigSig_Settings.php";
 }
+
+use tp\DigSig\DigSig;
 
 /*** Load (set action hooks, etc.) ***/
 DigSig::load(__FILE__);
