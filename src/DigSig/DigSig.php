@@ -165,18 +165,6 @@ class DigSig
     }
 
 
-    public function admin(): DigSig_AdminAPI
-    {
-        if ($this->admin === null) {
-            if (!TOUCHPOINT_COMPOSER_ENABLED) {
-                require_once 'DigSig_AdminAPI.php';
-            }
-            $this->admin = new DigSig_AdminAPI();
-        }
-        return $this->admin;
-    }
-
-
     public static function setCaching(int $level): void
     {
         self::$cacheLevel = max(self::$cacheLevel, $level);
@@ -248,16 +236,6 @@ class DigSig
                 $template = file_get_contents(__DIR__ . "/template.html");
                 echo str_replace("{{static}}", plugins_url("digsig/static/"), $template);
                 exit;
-            }
-
-            // App Events Endpoint
-            if ($reqUri['path'][1] === DigSig::API_ENDPOINT_APP_EVENTS &&
-                DigSig::useTribeCalendar()
-            ) {
-
-                if (!EventsCalendar::api($reqUri)) {
-                    return $continue;
-                }
             }
         }
 
