@@ -21,7 +21,7 @@ class DigSig
     /**
      * Version number
      */
-    public const VERSION = "0.0.9";
+    public const VERSION = "0.0.10";
 
     public const DEBUG = false;
 
@@ -39,7 +39,6 @@ class DigSig
      * API Endpoint prefix, and specific endpoints.  All must be lower-case.
      */
     public const API_ENDPOINT = "digsig";
-    public const API_ENDPOINT_APP_EVENTS = "app-events";
 
     /**
      * Prefix to use for all settings.
@@ -58,11 +57,6 @@ class DigSig
      * The singleton.
      */
     private static ?DigSig $_instance = null;
-
-    /**
-     * The admin object.
-     */
-    protected ?DigSig_AdminAPI $admin = null;
 
     /**
      * Settings object
@@ -234,7 +228,9 @@ class DigSig
                 header("Pragma: no-cache");
 
                 $template = file_get_contents(__DIR__ . "/template.html");
-                echo str_replace("{{static}}", plugins_url("digsig/static/"), $template);
+                $template = str_replace("{{static}}", plugins_url("digsig/static/"), $template);
+                $template = str_replace("{{version}}", DigSig::VERSION, $template);
+                echo $template;
                 exit;
             }
         }
