@@ -120,10 +120,8 @@ function updateEventLists() {
         xhr = new XMLHttpRequest();
     xhr.addEventListener("load", featuredCallback);
     xhr.open("GET", "https://www.tenth.org/wp-json/tribe/events/v1/events?featured=true&start_date=" +
-    // xhr.open("GET", "https://www.tenth.org/wp-json/tribe/events/v1/events?start_date=" +
         d0.toString("%Y-%m-%d") + "&end_date=" + d1.toString("%Y-%m-%d") +
         "&hide_subsequent_recurrences=1&per_page=200", featuredCallback);
-        // "&per_page=200", featuredCallback);
     xhr.send();
 
     function featuredCallback() {
@@ -139,6 +137,8 @@ function updateEventLists() {
 
             let evtObj = {
                 title: evts[ei].title,
+                allDay: evts[ei].all_day,
+                shortUrl: evts[ei].short_url ?? "",
                 dtStart: new Date(evts[ei].start_date),
                 dtEnd: new Date(evts[ei].end_date),
                 ministry: '', // TODO evts[ei].ministry ? evts[ei].ministry : '',
@@ -305,7 +305,15 @@ function changeSlide() {
         // Everything else
         } else {
             if (event.hasOwnProperty('hasSlideImage') && event.hasSlideImage !== true) {
-                nextSlide.innerHTML = "<div><h2>" + event.title + "</h2><p>" + event.dtStart.toDateStringFormatted() + " &sdot; " + event.dtStart.toTimeStringFormatted() + "</p><p>" + event.location + "</p><p class='ministry'>" + event.ministry + "</p></div>";
+                let shortUrl = "";
+                if (event.shortUrl && event.shortUrl !== "") {
+                    shortUrl = "<p>" + event.shortUrl + "</p>";
+                }
+                if (event.allDay) {
+                    nextSlide.innerHTML = "<div><h2>" + event.title + "</h2><p>" + event.dtStart.toDateStringFormatted() + "</p><p>" + event.location + "</p>" + shortUrl + "</div>";
+                } else {
+                    nextSlide.innerHTML = "<div><h2>" + event.title + "</h2><p>" + event.dtStart.toDateStringFormatted() + " &sdot; " + event.dtStart.toTimeStringFormatted() + "</p><p>" + event.location + "</p>" + shortUrl+ "</div>";
+                }
             } else {
                 nextSlide.innerHTML = "";
             }
