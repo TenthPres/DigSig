@@ -115,13 +115,10 @@ setTimeout(() => window.location.reload(), 1000 * 60 * 60 * 8);
 
 function updateEventLists() {
 
-    let d0 = new Date(),
-        d1 = d0.addDays(93),
+    let params = window.location.search;
         xhr = new XMLHttpRequest();
     xhr.addEventListener("load", featuredCallback);
-    xhr.open("GET", "https://www.tenth.org/wp-json/tribe/events/v1/events?featured=true&start_date=" +
-        d0.toString("%Y-%m-%d") + "&end_date=" + d1.toString("%Y-%m-%d") +
-        "&hide_subsequent_recurrences=1&per_page=200", featuredCallback);
+    xhr.open("GET", "/digsig/data" + params, featuredCallback);
     xhr.send();
 
     function featuredCallback() {

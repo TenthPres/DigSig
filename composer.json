@@ -17,5 +17,7 @@
             "email": "jkrrv@jkrrv.org"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-json": "*"
+    }
 }

@@ -233,10 +233,143 @@ class DigSig
                 echo $template;
                 exit;
             }
+
+            if (count($reqUri['path']) === 2 && strtolower($reqUri['path']['1']) === 'data') {
+                self::doApiRequest();
+            }
         }
 
         self::$context = "";
         return $continue;
+    }
+
+
+
+    protected function doApiRequest(): void
+    {
+
+
+        $eventsList = [];
+
+        if (is_plugin_active('touchpoint-wp/touchpoint-wp.php')) {
+            $q = new \WP_Query();
+
+            $existingMq = $q->get('meta_query');
+
+            if (!class_exists('\tp\TouchPointWP\Meeting')) {
+                return;
+            }
+
+            $now = current_datetime();
+
+            $mq = [
+                [
+                    [
+                        'key' => \tp\TouchPointWP\Meeting::MEETING_END_META_KEY,
+                        'value' => $now->format('U'),
+                        'compare' => ">="
+                    ],
+                    [ // This condition is to allow for the possibility of events without end times.
+                        [
+                            'key' => \tp\TouchPointWP\Meeting::MEETING_END_META_KEY,
+                            'compare' => '=',
+                            'value' => 0
+                        ],
+                        [
+                            'key' => \tp\TouchPointWP\Meeting::MEETING_START_META_KEY,
+                            'value' => $now->format('U'),
+                            'compare' => ">"
+                        ],
+                        'relation' => 'AND'
+                    ],
+                    'relation' => 'OR'
+                ],
+                [
+                    'key' => \tp\TouchPointWP\Meeting::MEETING_META_KEY,
+                    'value' => 0,
+                    'compare' => ">"
+                ],
+                'relation' => 'AND'
+            ];
+
+            if (!empty($existingMq)) {
+                $mq = [
+                    'relation' => 'AND',
+                    $existingMq,
+                    $mq,
+                ];
+            }
+
+            $q->set('meta_query', $mq);
+
+            $q->set('meta_key', \tp\TouchPointWP\Meeting::MEETING_START_META_KEY);
+            $q->set('orderby', 'meta_value');
+            $q->set('order', 'ASC');
+            $q->set('posts_per_page', 200);
+
+            $q->set('post_type', \tp\TouchPointWP\Involvement_PostTypeSettings::getPostTypes());
+
+            $iids = [];
+
+            foreach ($q->get_posts() as $eQ) {
+                /** @var WP_Post $eQ */
+                global $post;
+                $post = $eQ;
+
+                try {
+                    $e = \tp\TouchPointWP\Meeting::fromPost($eQ);
+                } catch (\tp\TouchPointWP\TouchPointWP_Exception $e) {
+                    continue;
+                }
+
+                $iid = $e->involvementId();
+                if (in_array($iid, $iids)) {
+                    continue;
+                }
+                $iids[] = $iid;
+
+                $eO = [];
+
+                $eO['title'] = $eQ->post_title;
+
+                $e = \tp\TouchPointWP\Meeting::fromPost($eQ);
+
+                $eo['allDay'] = $e->isAllDay();
+
+                $eO['shortUrl'] = ""; // TODO
+
+                $eO['dtStart'] = $e->startDt->format('U');
+                $eO['dtEnd'] = $e->endDt ? $e->endDt->format('U') : null;
+
+                $eO['ministry'] = null; // TODO
+
+                $eO['location'] = $e->locationName();
+
+                $eO['category'] = null;
+
+                $eO['imageUrl'] = get_the_post_thumbnail_url($eQ->ID, 'large');
+
+                $eO['url'] = "";
+
+                $eO['hasSlideImage'] = false; // TODO
+
+                $eO['IID'] = $iid;
+
+                $eventsList[] = $eO;
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode($eventsList);
+            exit;
+
+        } elseif (function_exists('tribe_get_events')) {
+            $d0 = current_datetime();
+            $d1 = $d0->modify('+93 days');
+            header("Location: /wp-json/tribe/events/v1/events?featured=true&start_date=" .
+                $d0->format('Y-m-d') . "&end_date=" . $d1->format('Y-m-d') .
+                "&hide_subsequent_recurrences=1&per_page=200");
+            exit;
+        }
     }
 
     /**
