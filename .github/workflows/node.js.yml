@@ -1,5 +1,5 @@
 
-name: Build.
+name: Build
 
 on:
   push:
@@ -13,10 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+      
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
+        
+    - name: Run CI
+      run: npm ci
+      
+    - name: Build
+      run: npm run build --if-present
+      
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with: 
+        name: digsig
+        path: digsig.zip
+    
