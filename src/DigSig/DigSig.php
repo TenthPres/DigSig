@@ -21,7 +21,7 @@ class DigSig
     /**
      * Version number
      */
-    public const VERSION = "1.0.0";
+    public const VERSION = "1.0.1";
 
     public const DEBUG = false;
 
@@ -261,6 +261,7 @@ class DigSig
             }
 
             $now = current_datetime();
+            $later = $now->modify('+93 days');
 
             $mq = [
                 [
@@ -288,6 +289,11 @@ class DigSig
                     'key' => \tp\TouchPointWP\Meeting::MEETING_META_KEY,
                     'value' => 0,
                     'compare' => ">"
+                ],
+                [
+                    'key' => \tp\TouchPointWP\Meeting::MEETING_START_META_KEY,
+                    'value' => $later->format('U'),
+                    'compare' => "<"
                 ],
                 'relation' => 'AND'
             ];
@@ -322,7 +328,7 @@ class DigSig
                     continue;
                 }
 
-                $iid = $e->involvementId();
+                $iid = $e->involvement()->getTouchPointId();
                 if (in_array($iid, $iids)) {
                     continue;
                 }
@@ -334,24 +340,28 @@ class DigSig
 
                 $e = \tp\TouchPointWP\Meeting::fromPost($eQ);
 
-                $eo['allDay'] = $e->isAllDay();
+                $eO['allDay'] = $e->isAllDay();
 
                 $eO['shortUrl'] = ""; // TODO
 
-                $eO['dtStart'] = $e->startDt->format('U');
-                $eO['dtEnd'] = $e->endDt ? $e->endDt->format('U') : null;
+                $eO['start_date'] = $e->startDt->format('Y-m-d H:i:s');
+                $eO['end_date'] = $e->endDt ? $e->endDt->format('Y-m-d H:i:s') : $eO['start_date'];
 
                 $eO['ministry'] = null; // TODO
 
                 $eO['location'] = $e->locationName();
+                $eO['venue'] = ['venue' => $eO['location']];
 
-                $eO['category'] = null;
+                $eO['categories'] = ['name' => null]; // TODO
 
-                $eO['imageUrl'] = get_the_post_thumbnail_url($eQ->ID, 'large');
+                $image = get_the_post_thumbnail_url($eQ, 'full');
+                $eO['image'] = (!!$image ? ['url' => $image] : false);
 
-                $eO['url'] = "";
+                $eO['imageUrl'] = $image;
 
-                $eO['hasSlideImage'] = false; // TODO
+                $eO['url'] = $e->permalink();
+
+                $eO['slide'] = null; // TODO
 
                 $eO['IID'] = $iid;
 
@@ -359,7 +369,7 @@ class DigSig
             }
 
             header('Content-Type: application/json');
-            echo json_encode($eventsList);
+            echo json_encode(['events' => $eventsList]);
             exit;
 
         } elseif (function_exists('tribe_get_events')) {
