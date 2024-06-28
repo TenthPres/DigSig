@@ -365,6 +365,16 @@ class DigSig
 
                 $eO['IID'] = $iid;
 
+                /**
+                 * Allows manipulation of the object that will be returned in the API to the display script.
+                 *
+                 * @since 1.0.1 Added
+                 *
+                 * @param array $eO The associative array that will be returned representing this one event.
+                 * @param \tp\TouchPointWP\Meeting $e The meeting object
+                 */
+                $eO = apply_filters('digsig_tpwp_event_data', $eO, $e);
+
                 $eventsList[] = $eO;
             }
 
