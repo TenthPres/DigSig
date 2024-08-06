@@ -1,6 +1,6 @@
 {
   "name": "digsig",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Dig(ital) Sig(nage) Build Procedure",
   "main": "index.js",
   "scripts": {
