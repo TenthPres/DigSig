@@ -340,7 +340,13 @@ class DigSig
 
                 $e = \tp\TouchPointWP\Meeting::fromPost($eQ);
 
-                $eO['allDay'] = $e->isAllDay();
+                if ($e->status() === \tp\TouchPointWP\Meeting::STATUS_CANCELLED) {
+                    $eO['title'] = "CANCELLED: " . $eO['title'];
+                } else {
+                    $eO['allDay'] = $e->isAllDay();
+                    $eO['location'] = $e->locationName();
+                    $eO['venue'] = ['venue' => $eO['location']];
+                }
 
                 $eO['shortUrl'] = ""; // TODO
 
@@ -348,9 +354,6 @@ class DigSig
                 $eO['end_date'] = $e->endDt ? $e->endDt->format('Y-m-d H:i:s') : $eO['start_date'];
 
                 $eO['ministry'] = null; // TODO
-
-                $eO['location'] = $e->locationName();
-                $eO['venue'] = ['venue' => $eO['location']];
 
                 $eO['categories'] = ['name' => null]; // TODO
 
