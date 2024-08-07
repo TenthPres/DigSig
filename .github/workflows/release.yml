@@ -1,12 +1,14 @@
 name: Create Release
 
 on:
-  push:
-    tags:
-      - '*'
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
 
 jobs:
   release:
+    if: startsWith(github.event.workflow_run.head_commit.message, 'tag:')
     runs-on: ubuntu-latest
 
     steps:
