@@ -21,6 +21,7 @@ License:            MIT
 Requires at least:  5.5
 Tested up to:       5.9.3
 Requires PHP:       7.4
+Release Asset:      true
 */
 
 // die if called directly.
