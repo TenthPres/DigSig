@@ -18,7 +18,7 @@ jobs:
         with:
           workflow: Build
           name: digsig
-          path: .
+          path: digsig.zip
 
       - name: Extract tag name
         id: extract_tag
