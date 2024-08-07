@@ -1,23 +1,22 @@
 name: Create Release
 
 on:
-  workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
+  push:
+    tags:
+      - '*'
 
 jobs:
   release:
-    if: startsWith(github.event.workflow_run.head_commit.message, 'tag:')
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
+      - name: Download artifact from the latest successful workflow run
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: Build
           name: digsig
           path: .
 
@@ -30,7 +29,8 @@ jobs:
 
       - name: Get the changelog
         id: changelog
-        run: echo "changelog=$(git log -1 --pretty=format:'%s' $GITHUB_REF)" >> $GITHUB_ENV
+        run: |
+          echo "changelog=$(git log -1 --pretty=format:'%s' $GITHUB_REF)" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
@@ -38,8 +38,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ env.TAG }}
+          release_name: Release ${{ env.TAG }}
           draft: true
           prerelease: false
           body: ${{ env.changelog }}
