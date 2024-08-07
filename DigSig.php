@@ -14,12 +14,12 @@ Plugin Name:        DigSig
 Plugin URI:         https://github.com/tenthpres/digsig
 GitHub Plugin URI:  https://github.com/tenthpres/digsig
 Description:        A WordPress Plugin for Digital Signage
-Version:            1.0.2
+Version:            1.0.3
 Author:             James K
 Author URI:         https://github.com/jkrrv
 License:            MIT
 Requires at least:  5.5
-Tested up to:       5.9.3
+Tested up to:       6.0.1
 Requires PHP:       7.4
 Release Asset:      true
 */
