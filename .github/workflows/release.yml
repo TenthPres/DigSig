@@ -18,7 +18,11 @@ jobs:
         with:
           workflow: Build
           name: digsig
-          path: digsig.zip
+          path: .
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List downloaded files for debugging
+        run: ls -alh
 
       - name: Extract tag name
         id: extract_tag
