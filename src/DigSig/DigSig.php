@@ -342,12 +342,13 @@ class DigSig
 
                 if ($e->status() === \tp\TouchPointWP\Meeting::STATUS_CANCELLED) {
                     $eO['title'] = "CANCELLED: " . $eO['title'];
+                    $eO['location'] = null;
                 } else {
                     $eO['allDay'] = $e->isAllDay();
                     $eO['location'] = $e->locationName();
-                    $eO['venue'] = ['venue' => $eO['location']];
                 }
 
+                $eO['venue'] = ['venue' => $eO['location']];
                 $eO['shortUrl'] = ""; // TODO
 
                 $eO['start_date'] = $e->startDt->format('Y-m-d H:i:s');
