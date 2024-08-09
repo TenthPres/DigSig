@@ -6,3 +6,4 @@ composer.lock
 *.css.map
 /digsig.zip
 /node_modules/
+/build/
