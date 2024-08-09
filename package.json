@@ -8,7 +8,8 @@
     "build:rm": "del digsig.zip",
     "build:less-1": "lessc static/style/core.less static/style/core.css --source-map",
     "build:less-2": "csso -i static/style/core.css -o static/style/core.min.css -s static/style/core.min.css.map",
-    "build:zip": "jszip static/ src/ DigSig.php LICENSE.md composer.json --ignore *.less -o digsig.zip"
+    "build:zip": "jszip static/ src/ DigSig.php LICENSE.md composer.json --ignore '**/*.less' -o digsig.zip"
+
   },
   "repository": {
     "type": "git",
