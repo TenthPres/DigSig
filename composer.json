@@ -3,7 +3,7 @@
     "description": "Digital Signage powered by WordPress",
     "type": "wordpress-plugin",
     "license": "MIT",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "config": {
         "optimize-autoloader": true
     },
