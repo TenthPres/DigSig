@@ -55,7 +55,9 @@ jobs:
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Create Release ZIP
-        run: zip -r digsig-${{ env.TAG }}.zip build-rel/**
+        run: |
+          cd build-rel
+          zip -r ../digsig-${{ env.TAG }}.zip ./*
 
       - name: Create GitHub Release
         id: create_release
