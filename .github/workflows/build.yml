@@ -54,11 +54,8 @@ jobs:
         id: extract_tag
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: digsig-${{ env.TAG }}
-          path: build-rel
+      - name: Create Release ZIP
+        run: zip -r digsig-${{ env.TAG }}.zip build-rel/
 
       - name: Create GitHub Release
         id: create_release
