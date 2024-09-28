@@ -306,11 +306,30 @@ function changeSlide() {
                 if (event.shortUrl && event.shortUrl !== "") {
                     shortUrl = "<p>" + event.shortUrl + "</p>";
                 }
+
+                let div = document.createElement('div');
+
                 if (event.allDay) {
-                    nextSlide.innerHTML = "<div><h2>" + event.title + "</h2><p>" + event.dtStart.toDateStringFormatted() + "</p><p>" + event.location + "</p>" + shortUrl + "</div>";
+                    div.innerHTML = "<div><h2>" + event.title + "</h2><p>" + event.dtStart.toDateStringFormatted() + "</p><p>" + event.location + "</p>" + shortUrl + "</div>";
                 } else {
-                    nextSlide.innerHTML = "<div><h2>" + event.title + "</h2><p>" + event.dtStart.toDateStringFormatted() + " &sdot; " + event.dtStart.toTimeStringFormatted() + "</p><p>" + event.location + "</p>" + shortUrl+ "</div>";
+                    div.innerHTML = "<div><h2>" + event.title + "</h2><p>" + event.dtStart.toDateStringFormatted() + " &sdot; " + event.dtStart.toTimeStringFormatted() + "</p><p>" + event.location + "</p>" + shortUrl+ "</div>";
                 }
+
+                nextSlide.appendChild(div);
+
+                // reduce font size to fit on screen when needed.
+                let height = div.clientHeight;
+                let fontSize = 1;
+                while (height > 0.75 * window.innerHeight) {
+                    fontSize -= 0.05;
+                    if (fontSize < 0.5) {
+                        break;
+                    }
+                    div.style.fontSize = fontSize + "em";
+                    height = div.clientHeight;
+                }
+
+
             } else {
                 nextSlide.innerHTML = "";
             }
