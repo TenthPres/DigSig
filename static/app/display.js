@@ -320,7 +320,7 @@ function changeSlide() {
                 // reduce font size to fit on screen when needed.
                 let height = div.clientHeight;
                 let fontSize = 1;
-                while (height > 0.75 * window.innerHeight) {
+                while (height > (1/3) * window.innerHeight) {
                     fontSize -= 0.05;
                     if (fontSize < 0.5) {
                         break;
