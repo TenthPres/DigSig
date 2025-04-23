@@ -288,7 +288,12 @@ class DigSig
                 [
                     'key' => \tp\TouchPointWP\Meeting::MEETING_META_KEY,
                     'value' => 0,
-                    'compare' => ">"
+                    'compare' => "!="
+                ],
+                [
+                    'key' => \tp\TouchPointWP\Meeting::MEETING_IS_GROUP_MEMBER,
+                    'value' => 1,
+                    'compare' => "!="
                 ],
                 [
                     'key' => \tp\TouchPointWP\Meeting::MEETING_START_META_KEY,
